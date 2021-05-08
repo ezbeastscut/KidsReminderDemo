@@ -64,7 +64,7 @@ namespace KidsReminderApi.Controllers
                 var blob = client.GetBlobClient(blobName);
                 if (blob.Exists())
                 {
-                    return string.Empty;
+                    blob.Delete();
                 }
 
                 using (var ms = new MemoryStream())

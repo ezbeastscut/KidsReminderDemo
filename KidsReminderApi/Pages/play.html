@@ -18,24 +18,6 @@
     <body>
         <script>
 
-            function createBlob(blob) {
-                var content = JSON.stringify(blob);
-                var req = new XMLHttpRequest();
-                var url = "https://kidsreminder.azurewebsites.net/api/tasks";
-                req.open("PUT", url, false);
-                req.setRequestHeader("Accept", "application/json");
-                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-                req.onreadystatechange = function () {
-                    if (this.readyState == 4) {
-                        req.onreadystatechange = null;
-                        if (this.status == 200) {
-                            return JSON.parse(this.response);
-                        }
-                    }
-                };
-                req.send(content);
-            }
-
             function getBlob() {
                 var result = null;
                 var req = new XMLHttpRequest();
@@ -59,12 +41,13 @@
                     'click',
                     function () {
                         var result = getBlob();
+                        var name = result['name'];
                         var date = new Date(parseInt(result['time']));
                         var time = date.toLocaleTimeString(navigator.language, {
                             hour: '2-digit',
                             minute:'2-digit'
                         });
-                        var text = time + ', ' + result['subject']
+                        var text = name + ', it\'s ' + time + ', ' + result['subject']
                         $("#taskResult").text(text);
 
                         var url = "https://tts.baidu.com/text2audio?tex=" + text + "&cuid=baike&lan=EN&ctp=1&pdt=31&vol=9&spd=5&per=4100";

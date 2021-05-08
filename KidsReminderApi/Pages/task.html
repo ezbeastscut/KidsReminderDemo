@@ -100,26 +100,45 @@
                     'click',
                     function () {
                         var blob = {};
-                        blob.Time = $('#time').val().toLocaleTimeString();
+                        blob.Name = $('#name').text();
+                        blob.Time = $('#time').val();
                         blob.Subject = "time to do " + $('#subject').text();
                         createBlob(blob);
+                        $('#details').text('You are all set ' + $('#name').text() + ', ' + $('#time').val() + ', ' + $('#subject').text() + '!');
                     });
             });
         </script>
         <div class="container-fluid">
+
             <div class="page-title" id="page-title">Kids Reminder</div>
-            <div>
-                <label>Time for the task</label>
-                <input id="time" type="datetime-local"></input>
+
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col" style="max-width: 50%">
+                        <label style="font-weight: bold">What's your name?</label>
+                        <input id="name" class="form-control" type="text" placeholder="Name"></input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" style="max-width: 50%">
+                        <label style="font-weight: bold">When will your task start?</label>
+                        <input id="time" class="form-control" type="datetime-local"></input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" style="max-width: 50%">
+                        <label style="font-weight: bold">What's the subject of your task?</label>
+                        <input id="subject" class="form-control" type="text" placeholder="Subject"></input>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <button class="btn btn-primary" id="btnAddTask" type="submit">Add</button>
             </div>
-            <div>
-                <label>Subject of the task</label>
-                <input id="subject" type="text"></input>
+
+            <div class="tab-content">
+                <span id="details"></span>
             </div>
-            <button class="btn btn-primary" id="btnAddTask" type="submit">Add Task</button>
-        </div>
-        <br/>
-        <div id="triggerlink">
         </div>
     </body>
 </html>
