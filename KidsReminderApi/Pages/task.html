@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kids Reminder</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <style>
+            .body {
+                background-color: azure;
+            }
+
+            .nav-tabs {
+                border: none;
+            }
+
+            .nav-tabs .nav-link {
+                border: none;
+                color: black;
+            }
+
+            .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+                border: none;
+                font-weight: 700;
+                font-family: 'Segoe UI';
+                border-bottom: 3px solid blue;
+            }
+
+            .navresult-tabs {
+                border: none;
+            }
+
+            .navresult-tabs .nav-link {
+                border: none;
+                color: black;
+            }
+
+            .input-group-append{
+                padding-left: 6px;
+            }
+
+            #page-title{
+                color: rgb(255, 255, 255);
+                background-color: #10a0b6;
+                text-align: left;
+                padding: 24px 24px 24px 24px;
+                font-size: 26px;
+                font-weight: 400;
+            }
+        </style>
+    </head>
+    <body class="body">
+        <script>
+
+            function createBlob(blob) {
+                var content = JSON.stringify(blob);
+                var req = new XMLHttpRequest();
+                var url = "https://kidsreminder.azurewebsites.net/api/tasks";
+                req.open("PUT", url, false);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        req.onreadystatechange = null;
+                        if (this.status == 200) {
+                            return JSON.parse(this.response);
+                        }
+                    }
+                };
+                req.send(content);
+            }
+
+            function getBlob() {
+                var result = null;
+                var req = new XMLHttpRequest();
+                var url = "https://kidsreminder.azurewebsites.net/api/tasks";
+                req.open("GET", url, false);
+                req.setRequestHeader("Accept", "application/json");
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        req.onreadystatechange = null;
+                        if (this.status == 200) {
+                            result = JSON.parse(this.response);
+                        }
+                    }
+                };
+                req.send();
+                return result;
+            }
+
+            $(function () {
+                $('#btnAddTask').on(
+                    'click',
+                    function () {
+                        var blob = {};
+                        blob.Time = $('#time').val().toLocaleTimeString();
+                        blob.Subject = "time to do " + $('#subject').text();
+                        createBlob(blob);
+                    });
+            });
+        </script>
+        <div class="container-fluid">
+            <div class="page-title" id="page-title">Kids Reminder</div>
+            <div>
+                <label>Time for the task</label>
+                <input id="time" type="datetime-local"></input>
+            </div>
+            <div>
+                <label>Subject of the task</label>
+                <input id="subject" type="text"></input>
+            </div>
+            <button class="btn btn-primary" id="btnAddTask" type="submit">Add Task</button>
+        </div>
+        <br/>
+        <div id="triggerlink">
+        </div>
+    </body>
+</html>

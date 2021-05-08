@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kids Reminder</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <style>
+        </style>
+    </head>
+    <body>
+        <script>
+
+            function createBlob(blob) {
+                var content = JSON.stringify(blob);
+                var req = new XMLHttpRequest();
+                var url = "https://kidsreminder.azurewebsites.net/api/tasks";
+                req.open("PUT", url, false);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        req.onreadystatechange = null;
+                        if (this.status == 200) {
+                            return JSON.parse(this.response);
+                        }
+                    }
+                };
+                req.send(content);
+            }
+
+            function getBlob() {
+                var result = null;
+                var req = new XMLHttpRequest();
+                var url = "https://kidsreminder.azurewebsites.net/api/tasks";
+                req.open("GET", url, false);
+                req.setRequestHeader("Accept", "application/json");
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        req.onreadystatechange = null;
+                        if (this.status == 200) {
+                            result = JSON.parse(this.response);
+                        }
+                    }
+                };
+                req.send();
+                return result;
+            }
+
+            $(function () {
+                $('#btnGetTask').on(
+                    'click',
+                    function () {
+                        var result = getBlob();
+                        var date = new Date(parseInt(result['time']));
+                        var time = date.toLocaleTimeString(navigator.language, {
+                            hour: '2-digit',
+                            minute:'2-digit'
+                        });
+                        var text = time + ', ' + result['subject']
+                        $("#taskResult").text(text);
+
+                        var url = "https://tts.baidu.com/text2audio?tex=" + text + "&cuid=baike&lan=EN&ctp=1&pdt=31&vol=9&spd=5&per=4100";
+                        url = encodeURI(url);
+                        setTimeout(function(){ document.getElementById("triggerlink").innerHTML = '<video controls playsinline autoplay name="media"><source src="' + url + '" type="audio/mp3"></video>'; }, 1000);
+                    });
+            });
+        </script>
+
+        <button class="btn btn-primary" id="btnGetTask" type="submit">Get Task</button>
+        <br/>
+        <span id="taskResult"></span>
+        <div id="triggerlink">
+        </div>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KidsReminderApi", "KidsReminderApi\KidsReminderApi.csproj", "{0F6CE430-6C7D-4F05-AE81-657B55A59C4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pages", "Pages", "{502DA505-3820-41BD-9924-8C316D7BB38E}"
+	ProjectSection(SolutionItems) = preProject
+		Pages\play.html = Pages\play.html
+		Pages\task.html = Pages\task.html
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F6CE430-6C7D-4F05-AE81-657B55A59C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F6CE430-6C7D-4F05-AE81-657B55A59C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F6CE430-6C7D-4F05-AE81-657B55A59C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F6CE430-6C7D-4F05-AE81-657B55A59C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37118890-989C-4DB8-82F5-8C0DA5703783}
+	EndGlobalSection
+EndGlobal
