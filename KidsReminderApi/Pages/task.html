@@ -100,11 +100,20 @@
                     'click',
                     function () {
                         var blob = {};
-                        blob.Name = $('#name').text();
+                        blob.Name = $('#name').val();
                         blob.Time = $('#time').val();
-                        blob.Subject = "time to do " + $('#subject').text();
+                        blob.Subject = $('#subject').val();
                         createBlob(blob);
-                        $('#details').text('You are all set ' + $('#name').text() + ', ' + $('#time').val() + ', ' + $('#subject').text() + '!');
+                        var result = getBlob();
+                        var date = new Date(result['time']);
+                        var dateText = date.toLocaleDateString();
+                        var timeText = date.toLocaleTimeString(
+                            navigator.language,
+                            {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        $('#details').text('You are all set ' + result['name'] + ', ' + dateText + ', ' + timeText + ', ' + result['subject'] + '!');
                     });
             });
         </script>

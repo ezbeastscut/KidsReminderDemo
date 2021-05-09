@@ -47,7 +47,7 @@
                             hour: '2-digit',
                             minute:'2-digit'
                         });
-                        var text = name + ', it\'s ' + time + ', ' + result['subject']
+                        var text = name + ', it\'s ' + time + ', time to do ' + result['subject'];
                         $("#taskResult").text(text);
 
                         var url = "https://tts.baidu.com/text2audio?tex=" + text + "&cuid=baike&lan=EN&ctp=1&pdt=31&vol=9&spd=5&per=4100";
