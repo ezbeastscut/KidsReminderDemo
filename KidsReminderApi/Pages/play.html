@@ -57,6 +57,11 @@
             setInterval(
                 function () {
                     var blob = getBlob();
+                    var date = new Date(blob['time']);
+                    if (Date.now() < date) {
+                        return;
+                    }
+
                     var alarms = parseInt(blob['alarms']);
                     console.log(alarms);
                     if (alarms > 0) {
@@ -64,11 +69,6 @@
                         createBlob(blob);
                     }
                     else {
-                        return;
-                    }
-
-                    var date = new Date(blob['time']);
-                    if (Date.now() < date) {
                         return;
                     }
 
