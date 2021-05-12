@@ -18,6 +18,24 @@
     <body>
         <script>
 
+            function createBlob(blob) {
+                var content = JSON.stringify(blob);
+                var req = new XMLHttpRequest();
+                var url = "https://kidsreminder.azurewebsites.net/api/tasks";
+                req.open("PUT", url, false);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        req.onreadystatechange = null;
+                        if (this.status == 200) {
+                            return JSON.parse(this.response);
+                        }
+                    }
+                };
+                req.send(content);
+            }
+
             function getBlob() {
                 var result = null;
                 var req = new XMLHttpRequest();
@@ -36,29 +54,45 @@
                 return result;
             }
 
-            $(function () {
-                $('#btnGetTask').on(
-                    'click',
-                    function () {
-                        var result = getBlob();
-                        var name = result['name'];
-                        var date = new Date(parseInt(result['time']));
-                        var time = date.toLocaleTimeString(navigator.language, {
+            setInterval(
+                function () {
+                    var blob = getBlob();
+                    var alarms = parseInt(blob['alarms']);
+                    console.log(alarms);
+                    if (alarms > 0) {
+                        blob['alarms'] = alarms - 1;
+                        createBlob(blob);
+                    }
+                    else {
+                        return;
+                    }
+
+                    var date = new Date(blob['time']);
+                    if (Date.now() < date) {
+                        return;
+                    }
+
+                    var time = date.toLocaleTimeString(
+                        navigator.language,
+                        {
                             hour: '2-digit',
                             minute:'2-digit'
                         });
-                        var text = name + ', it\'s ' + time + ', time to do ' + result['subject'];
-                        $("#taskResult").text(text);
+                    var name = blob['name'];
+                    var text = 'Dear ' + name + ', it\'s time for ' + blob['subject'] + ', scheduled at ' + time;
+                    $("#taskResult").text(text);
 
-                        var url = "https://tts.baidu.com/text2audio?tex=" + text + "&cuid=baike&lan=EN&ctp=1&pdt=31&vol=9&spd=5&per=4100";
-                        url = encodeURI(url);
-                        setTimeout(function(){ document.getElementById("triggerlink").innerHTML = '<video controls playsinline autoplay name="media"><source src="' + url + '" type="audio/mp3"></video>'; }, 1000);
-                    });
-            });
+                    var url = "https://tts.baidu.com/text2audio?tex=" + text + "&cuid=baike&lan=EN&ctp=1&pdt=31&vol=9&spd=5&per=4100";
+                    url = encodeURI(url);
+                    setTimeout(
+                        function () {
+                            document.getElementById("triggerlink").innerHTML = '<video controls playsinline autoplay name="media"><source src="' + url + '" type="audio/mp3"></video>';
+                        },
+                        1000);
+                },
+                30 * 1000);
         </script>
 
-        <button class="btn btn-primary" id="btnGetTask" type="submit">Get Task</button>
-        <br/>
         <span id="taskResult"></span>
         <div id="triggerlink">
         </div>

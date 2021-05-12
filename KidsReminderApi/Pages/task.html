@@ -103,6 +103,7 @@
                         blob.Name = $('#name').val();
                         blob.Time = $('#time').val();
                         blob.Subject = $('#subject').val();
+                        blob.Alarms = 3;
                         createBlob(blob);
                         var result = getBlob();
                         var date = new Date(result['time']);
@@ -143,6 +144,8 @@
                 <br />
                 <br />
                 <button class="btn btn-primary" id="btnAddTask" type="submit">Add</button>
+                <br />
+                <br />
             </div>
 
             <div class="tab-content">

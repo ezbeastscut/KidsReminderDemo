@@ -9,5 +9,7 @@ namespace KidsReminderApi
         public string Time { get; set; }
 
         public string Subject { get; set; }
+
+        public int Alarms { get; set; }
     }
 }
