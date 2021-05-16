@@ -13,6 +13,24 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <style>
+            .blinking{
+                color: white;
+                animation: blinkingText 1.2s infinite;
+                text-align: center;
+                padding: 12px 24px 12px 24px;
+                font-family: Verdana, sans-serif;
+                font-size: 26px;
+                font-weight: 400;
+                border-radius: 10px;
+                width: 70%;
+            }
+            @keyframes blinkingText{
+                0%{     background-color: #000;    }
+                49%{    background-color: rgb(129, 104, 104); }
+                60%{    background-color: transparent; }
+                99%{    background-color: transparent;  }
+                100%{   background-color: rgb(80, 27, 27);    }
+            }
         </style>
     </head>
     <body>
@@ -80,20 +98,20 @@
                         });
                     var name = blob['name'];
                     var text = 'Dear ' + name + ', it\'s time for ' + blob['subject'] + ', scheduled at ' + time;
-                    $("#taskResult").text(text);
 
                     var url = "https://tts.baidu.com/text2audio?tex=" + text + "&cuid=baike&lan=EN&ctp=1&pdt=31&vol=9&spd=5&per=4100";
                     url = encodeURI(url);
                     setTimeout(
                         function () {
                             document.getElementById("triggerlink").innerHTML = '<video controls playsinline autoplay name="media"><source src="' + url + '" type="audio/mp3"></video>';
+                            $('#taskResult').addClass("blinking").text("New Task Upcoming");
                         },
                         1000);
                 },
                 30 * 1000);
         </script>
 
-        <span id="taskResult"></span>
+        <div id="taskResult"></div>
         <div id="triggerlink">
         </div>
     </body>
